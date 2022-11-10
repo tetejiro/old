@@ -1,0 +1,15 @@
+画面遷移図
+  index.html [登録]
+  name-check.php 名前かぶりチェック、登録インサート
+  registrate.html メイン画面
+  ＜OK＞
+
+  index.html [ログイン]
+  login.php ログインセレクト
+  registrate.html メイン画面
+  <＜OK＞
+
+やりたいこと１
+〇地点登録
+インサートする
+（場所のcoordsとあだ名・メンバーコード）
