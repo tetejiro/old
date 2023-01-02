@@ -67,8 +67,6 @@ if (isset($_SESSION['login']) == false) {
 
   <body>
     <main>
-      <? php // require_once('./main-branch0.php');
-      ?>
       <div style="width: 100%;text-align: center;margin-top: 10%;">
         <p>現在の場所は</p>
         <p id="geol"></p>
@@ -84,18 +82,17 @@ if (isset($_SESSION['login']) == false) {
         <tr style="text-align: center;">
           <td id="td1">
             <form id="form1" action="main-branch.php" method="POST">
-              <label><input id="str" type="radio" name="start_or" value="開始" required>開始</label>
-              <script></script>
-              <label><input id="str" type="radio" name="start_or" value="終了">終了</label>
+              <label><input id="str" type="radio" name="start_or_stop" value="開始" required>開始</label>
+              <label><input id="str" type="radio" name="start_or_stop" value="終了">終了</label>
           </td>
           <td id="td2">
             <input id="loc" type="text" name="loc" required>
           </td>
           <td id="td3">
-            <input id="tim" type="time" name="timess" required>
+            <input id="tim" type="time" name="time" required>
           </td>
           <td id="td4">
-            <input id="con" type="text" name="content" required>
+            <input id="con" type="text" name="detail" required>
           </td>
         </tr>
       </table>
@@ -114,27 +111,26 @@ if (isset($_SESSION['login']) == false) {
               var lat = pos.coords.latitude;
               var long = pos.coords.longitude;
               var accu = pos.coords.accuracy;
-              let geol = `経度：${lat} / 緯度：${long}`;
+              let geol = `経度：${lat} / 緯度：${long} / accu : ${accu}`;
               console.log(geol + "\n" + accu);
               $('#geol').text(geol);
 
               //formのvalueに代入
               $('button').on('click', function() {
-                let data = {
-                  'array1': lat,
-                  'array2': long
+                let locationData = {
+                  'lat': lat,
+                  'long': long
                 };
-                let data2 = JSON.stringify(data);
-                document.getElementById('reg').value = data2;
+                document.getElementById('reg').value = JSON.stringify(locationData);
 
                 //代入
-                let start_or = document.getElementsByName('str').value;
+                let start_or_stop = document.getElementsByName('str').value;
                 let loc = document.getElementById('loc').value;
-                let timess = document.getElementById('tim').value;
-                let content = document.getElementById('con').value;
+                let time = document.getElementById('tim').value;
+                let detail = document.getElementById('con').value;
 
                 //空じゃなければ
-                if (start_or == '' && loc == '' && timess == '' && content == '') {
+                if (start_or_stop == '' && loc == '' && time == '' && detail == '') {
                   window.alert('記入漏れがあります。');
                 }
               });
@@ -152,7 +148,7 @@ if (isset($_SESSION['login']) == false) {
         <h3 id="header"></h3>
         <div id="next-prev-button">
           <button id="prev" onclick="prev()">＜</button>
-          <button id="next" onclick="next()">＜</button>
+          <button id="next" onclick="next()">＞</button>
         </div>
 
         <div id="calendar"></div>

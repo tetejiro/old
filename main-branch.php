@@ -1,37 +1,29 @@
 <?php
 try {
   session_start();
-  $whom = $_SESSION['code'];
+  $member_code = $_SESSION['code'];
 
-  $start_or = $_POST['start_or'];
+  $start_or_stop = $_POST['start_or_stop'];
   $loc = $_POST['loc'];
-  $timess = $_POST['timess'];
-  $content = $_POST['content'];
+  $time = $_POST['time'];
+  $detail = $_POST['detail'];
 
   $text = $_POST['text'];
   $text = json_decode($text, true);
+  print_r($text);
 
   $lat = $text['array1'];
   $long = $text['array2'];
 
-  require_once './DB.php';
+  require_once './DB_Query.php';
+  $dbQuery = new dbQuery();
+  // $sql = 'INSERT INTO contents(member_code, start_or_stop, place_code, detail)
+  //         VALUES(\''.$member_code.'\', \''.$start_or_stop.'\', \''.$detail.'\')';
+  // $rec = $dbQuery->dbQueryReturn($sql);//, \''.$loc.'\', \''.$lat.'\', \''.$long.'\'
 
-  $dbh = new PDO($dsn, $user, $password, [
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_EMULATE_PREPARES, false
-  ]);
-  $sql = 'INSERT INTO geolocation(whom, start_or, timess, content, location_name, latitude, longitude)
-          VALUES(:whom, :start_or, :timess, :content, :loc, :lat, :long)';
-  $stmt = $dbh->prepare($sql);
-  $stmt->bindValue(':whom', $whom, PDO::PARAM_STR);
-  $stmt->bindValue(':start_or', $start_or, PDO::PARAM_STR);
-  $stmt->bindValue(':timess', $timess, PDO::PARAM_STR);
-  $stmt->bindValue(':content', $content, PDO::PARAM_STR);
-  $stmt->bindValue(':loc', $loc, PDO::PARAM_STR);
-  $stmt->bindValue(':lat', $lat, PDO::PARAM_STR);
-  $stmt->bindValue(':long', $long, PDO::PARAM_STR);
-  $stmt->execute();
-  $dbh = null;
+  // $sql = 'INSERT INTO geolocation (location_name, latitude, longitude)
+  //         VALUES()';
+
   header('Location:./main.php');
 } catch (Exception $e) {
   var_dump($e);

@@ -1,6 +1,6 @@
 <?php
 
-require_once './DB.php';
+require_once './DB_Query.php';
 
 function sanitize($before)
 {
