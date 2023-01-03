@@ -86,60 +86,57 @@ if (isset($_SESSION['login']) == false) {
               <label><input id="str" type="radio" name="start_or_stop" value="終了">終了</label>
           </td>
           <td id="td2">
-            <input id="loc" type="text" name="loc" required>
+            <input id="location" type="text" name="location" required>
           </td>
           <td id="td3">
-            <input id="tim" type="time" name="time" required>
+            <input id="time" type="time" name="time" required>
           </td>
           <td id="td4">
-            <input id="con" type="text" name="detail" required>
+            <input id="detail" type="text" name="detail" required>
           </td>
         </tr>
       </table>
       <div class="bottom">
-        <input id="reg" type="hidden" name="text" value="">
-        <button>登録</button>
-        </form>
+        <input id="submitInfo" type="hidden" name="text">
+        <button type="submit">登録</button>
         <a href="./index.html">もどる</a>
+        </form>
         <script>
           'use strict';
-          navigator.geolocation.getCurrentPosition(success, fail);
+          navigator.geolocation.getCurrentPosition(success, fail, {enableHighAccuracy: true});
+          let lat;
+          let long;
+          let accu;
 
           function success(pos) {
             $(document).ready(function() {
-              //上側の現在の場所の入力
-              var lat = pos.coords.latitude;
-              var long = pos.coords.longitude;
-              var accu = pos.coords.accuracy;
-              let geol = `経度：${lat} / 緯度：${long} / accu : ${accu}`;
-              console.log(geol + "\n" + accu);
+              //現在の場所の代入
+              lat = pos.coords.latitude;
+              long = pos.coords.longitude;
+              accu = pos.coords.accuracy;
+              let geol = `経度：${lat} / 緯度：${long} / 高度 : ${accu}`;
               $('#geol').text(geol);
-
-              //formのvalueに代入
-              $('button').on('click', function() {
-                let locationData = {
-                  'lat': lat,
-                  'long': long
-                };
-                document.getElementById('reg').value = JSON.stringify(locationData);
-
-                //代入
-                let start_or_stop = document.getElementsByName('str').value;
-                let loc = document.getElementById('loc').value;
-                let time = document.getElementById('tim').value;
-                let detail = document.getElementById('con').value;
-
-                //空じゃなければ
-                if (start_or_stop == '' && loc == '' && time == '' && detail == '') {
-                  window.alert('記入漏れがあります。');
-                }
-              });
             });
           }
 
           function fail(error) {
             alert('位置情報の取得に失敗しました。エラーコード：' + error.code);
           }
+
+          //input type=hidden にPOSTする値を代入
+          $('form').submit(function(e) {
+            //e.preventDefault();
+            let locationData = {
+              'lat': lat,
+              'long': long,
+              'start_or_stop': document.querySelector('input[name=start_or_stop]:checked').value,
+              'locationName': document.getElementById('location').value,
+              'time': document.getElementById('time').value,
+              'detail': document.getElementById('detail').value
+            };
+            document.getElementById('submitInfo').value = JSON.stringify(locationData);
+            //console.log(document.getElementById('submitInfo').value);
+          });
         </script>
       </div>
       <div class="wrapper">
