@@ -17,15 +17,35 @@ class dbQuery {
     }
   }
 
-  function dbQueryReturn($sql) {
-    $dbh = new PDO($this->dsn, $this->user, $this->password);
-    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-    $stmt = $dbh->prepare($sql);
-    $stmt->execute();
-    $rec = $stmt->fetch(PDO::FETCH_ASSOC);
-    $dbh = null;
+  public function returnRecAll($sql) {
+    try {
+      $dbh = new PDO($this->dsn, $this->user, $this->password);
+      $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+      $stmt = $dbh->prepare($sql);
+      $stmt->execute();
+      $rec = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      $dbh = null;
+      return $rec;
+    } catch(Exception $e) {
+      print $sql;
+      //print $e;
+    }
+  }
 
-    return $rec;
+  public function returnRec($sql) {
+    try {
+      $dbh = new PDO($this->dsn, $this->user, $this->password);
+      $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+      $stmt = $dbh->prepare($sql);
+      $stmt->execute();
+      $rec = $stmt->fetch(PDO::FETCH_ASSOC);
+      $dbh = null;
+      return $rec;
+    } catch(Exception $e) {
+      print $sql;
+      //print $e;
+    }
   }
 }

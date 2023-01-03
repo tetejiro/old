@@ -12,7 +12,7 @@ $names = sanitize($_POST['names']);
 
 try {
   $sql = 'SELECT * FROM member WHERE names =\'' .$names.'\'';
-  $rec = $dbQuery->dbQueryReturn($sql);
+  $rec = $dbQuery->returnRec($sql);
 
   if (empty($rec) == false) {
     session_start();
